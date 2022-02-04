@@ -4042,7 +4042,7 @@ __webpack_require__(3123);
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
@@ -9431,7 +9431,7 @@ __webpack_require__(2222);
 (function (root, factory, undef) {
   if (true) {
     // CommonJS
-    module.exports = exports = factory(__webpack_require__(757), __webpack_require__(2601), __webpack_require__(1947), __webpack_require__(4978), __webpack_require__(7508), __webpack_require__(7590), __webpack_require__(3440), __webpack_require__(9865), __webpack_require__(8921), __webpack_require__(6876), __webpack_require__(7991), __webpack_require__(8122), __webpack_require__(8342), __webpack_require__(8714), __webpack_require__(6727), __webpack_require__(3486), __webpack_require__(3839), __webpack_require__(1582), __webpack_require__(702), __webpack_require__(2362), __webpack_require__(4412), __webpack_require__(5720), __webpack_require__(3518), __webpack_require__(6362), __webpack_require__(4431), __webpack_require__(8800), __webpack_require__(3992), __webpack_require__(649), __webpack_require__(8942), __webpack_require__(194), __webpack_require__(8437), __webpack_require__(4640), __webpack_require__(5323), __webpack_require__(4363));
+    module.exports = exports = factory(__webpack_require__(757), __webpack_require__(2601), __webpack_require__(1947), __webpack_require__(4978), __webpack_require__(7508), __webpack_require__(7590), __webpack_require__(3440), __webpack_require__(9865), __webpack_require__(8921), __webpack_require__(6876), __webpack_require__(7991), __webpack_require__(8122), __webpack_require__(8342), __webpack_require__(8714), __webpack_require__(6727), __webpack_require__(3486), __webpack_require__(3839), __webpack_require__(1582), __webpack_require__(8712), __webpack_require__(2362), __webpack_require__(4412), __webpack_require__(5720), __webpack_require__(3518), __webpack_require__(6362), __webpack_require__(4431), __webpack_require__(8800), __webpack_require__(3992), __webpack_require__(649), __webpack_require__(8942), __webpack_require__(194), __webpack_require__(8437), __webpack_require__(4640), __webpack_require__(5323), __webpack_require__(4363));
   } else {}
 })(void 0, function (CryptoJS) {
   return CryptoJS;
@@ -9810,7 +9810,7 @@ __webpack_require__(6495);
 
 /***/ }),
 
-/***/ 702:
+/***/ 8712:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14350,7 +14350,7 @@ module.exports = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ 4872:
+/***/ 3787:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -50711,6 +50711,9 @@ module.exports = function flags() {
 		throw new $TypeError('RegExp.prototype.flags getter called on non-object');
 	}
 	var result = '';
+	if (this.hasIndices) {
+		result += 'd';
+	}
 	if (this.global) {
 		result += 'g';
 	}
@@ -50748,7 +50751,7 @@ var implementation = __webpack_require__(3697);
 var getPolyfill = __webpack_require__(1721);
 var shim = __webpack_require__(2753);
 
-var flagsBound = callBind(implementation);
+var flagsBound = callBind(getPolyfill());
 
 define(flagsBound, {
 	getPolyfill: getPolyfill,
@@ -50771,13 +50774,9 @@ var implementation = __webpack_require__(3697);
 
 var supportsDescriptors = (__webpack_require__(4289).supportsDescriptors);
 var $gOPD = Object.getOwnPropertyDescriptor;
-var $TypeError = TypeError;
 
 module.exports = function getPolyfill() {
-	if (!supportsDescriptors) {
-		throw new $TypeError('RegExp.prototype.flags requires a true ES5 environment that supports property descriptors');
-	}
-	if ((/a/mig).flags === 'gim') {
+	if (supportsDescriptors && (/a/mig).flags === 'gim') {
 		var descriptor = $gOPD(RegExp.prototype, 'flags');
 		if (descriptor && typeof descriptor.get === 'function' && typeof (/a/).dotAll === 'boolean') {
 			return descriptor.get;
@@ -55500,7 +55499,7 @@ module.exports = __webpack_require__(7187).EventEmitter;
 
 /***/ }),
 
-/***/ 4896:
+/***/ 702:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(a,b){if(true)!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (b),
@@ -56324,7 +56323,7 @@ var _;
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
 
@@ -72645,7 +72644,7 @@ module.exports = URLBrowserResolver;
 var isFunction = (__webpack_require__(6225).isFunction);
 var isUndefined = (__webpack_require__(6225).isUndefined);
 var isNull = (__webpack_require__(6225).isNull);
-var FileSaver = __webpack_require__(4896);
+var FileSaver = __webpack_require__(702);
 var saveAs = FileSaver.saveAs;
 
 var defaultClientFonts = {
@@ -75178,8 +75177,8 @@ function addAll(target, otherArray) {
  * Creates an instance of LayoutBuilder - layout engine which turns document-definition-object
  * into a set of pages, lines, inlines and vectors ready to be rendered into a PDF
  *
- * @param {Object} pageSize - an object defining page width and height
- * @param {Object} pageMargins - an object defining top, left, right and bottom margins
+ * @param {object} pageSize - an object defining page width and height
+ * @param {object} pageMargins - an object defining top, left, right and bottom margins
  */
 function LayoutBuilder(pageSize, pageMargins, imageMeasure, svgMeasure) {
 	this.pageSize = pageSize;
@@ -75198,11 +75197,11 @@ LayoutBuilder.prototype.registerTableLayouts = function (tableLayouts) {
  * Executes layout engine on document-definition-object and creates an array of pages
  * containing positioned Blocks, Lines and inlines
  *
- * @param {Object} docStructure document-definition-object
- * @param {Object} fontProvider font provider
- * @param {Object} styleDictionary dictionary with style definitions
- * @param {Object} defaultStyle default style definition
- * @return {Array} an array of pages
+ * @param {object} docStructure document-definition-object
+ * @param {object} fontProvider font provider
+ * @param {object} styleDictionary dictionary with style definitions
+ * @param {object} defaultStyle default style definition
+ * @returns {Array} an array of pages
  */
 LayoutBuilder.prototype.layoutDocument = function (docStructure, fontProvider, styleDictionary, defaultStyle, background, header, footer, images, watermark, pageBreakBeforeFct) {
 
@@ -75778,6 +75777,26 @@ LayoutBuilder.prototype.processList = function (orderedList, node) {
 LayoutBuilder.prototype.processTable = function (tableNode) {
 	var processor = new TableProcessor(tableNode);
 
+	if (tableNode.table.isFooter) {
+		var footerHeight = 0;
+
+		for (var o = 0, m = tableNode.table.body.length; o < m; o++) {
+			for (var r = 0, t = tableNode.table.body[o].length; r < t; r++) {
+				var nodeCopy = Object.assign({}, tableNode.table.body[o][r]);
+				nodeCopy._inlines = tableNode.table.body[o][r]._inlines.map((sl) => (Object.assign({}, sl)));
+				var line = this.buildNextLine(nodeCopy);
+				footerHeight += line.getHeight();
+			}
+		}
+
+		var availableHeight = this.writer.context().availableHeight + this.pageMargins.top;
+		if (availableHeight < footerHeight) {
+			this.writer.moveToNextPage();
+			availableHeight = this.writer.context().availableHeight + this.pageMargins.top;
+		}
+		this.writer.context().moveDown(availableHeight - footerHeight);
+	}
+
 	processor.beginTable(this.writer);
 
 	var rowHeights = tableNode.table.heights;
@@ -75862,7 +75881,6 @@ LayoutBuilder.prototype.processToc = function (node) {
 };
 
 LayoutBuilder.prototype.buildNextLine = function (textNode) {
-
 	function cloneInline(inline) {
 		var newInline = inline.constructor();
 		for (var key in inline) {
@@ -76247,7 +76265,7 @@ function _interopDefault(ex) {
 	return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex;
 }
 
-var PdfKit = _interopDefault(__webpack_require__(4872));
+var PdfKit = _interopDefault(__webpack_require__(3787));
 
 function getEngineInstance() {
 	return PdfKit;
