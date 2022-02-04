@@ -31,8 +31,8 @@ function addAll(target, otherArray) {
  * Creates an instance of LayoutBuilder - layout engine which turns document-definition-object
  * into a set of pages, lines, inlines and vectors ready to be rendered into a PDF
  *
- * @param {Object} pageSize - an object defining page width and height
- * @param {Object} pageMargins - an object defining top, left, right and bottom margins
+ * @param {object} pageSize - an object defining page width and height
+ * @param {object} pageMargins - an object defining top, left, right and bottom margins
  */
 function LayoutBuilder(pageSize, pageMargins, imageMeasure, svgMeasure) {
 	this.pageSize = pageSize;
@@ -51,11 +51,11 @@ LayoutBuilder.prototype.registerTableLayouts = function (tableLayouts) {
  * Executes layout engine on document-definition-object and creates an array of pages
  * containing positioned Blocks, Lines and inlines
  *
- * @param {Object} docStructure document-definition-object
- * @param {Object} fontProvider font provider
- * @param {Object} styleDictionary dictionary with style definitions
- * @param {Object} defaultStyle default style definition
- * @return {Array} an array of pages
+ * @param {object} docStructure document-definition-object
+ * @param {object} fontProvider font provider
+ * @param {object} styleDictionary dictionary with style definitions
+ * @param {object} defaultStyle default style definition
+ * @returns {Array} an array of pages
  */
 LayoutBuilder.prototype.layoutDocument = function (docStructure, fontProvider, styleDictionary, defaultStyle, background, header, footer, images, watermark, pageBreakBeforeFct) {
 
@@ -631,6 +631,26 @@ LayoutBuilder.prototype.processList = function (orderedList, node) {
 LayoutBuilder.prototype.processTable = function (tableNode) {
 	var processor = new TableProcessor(tableNode);
 
+	if (tableNode.table.isFooter) {
+		var footerHeight = 0;
+
+		for (var o = 0, m = tableNode.table.body.length; o < m; o++) {
+			for (var r = 0, t = tableNode.table.body[o].length; r < t; r++) {
+				var nodeCopy = Object.assign({}, tableNode.table.body[o][r]);
+				nodeCopy._inlines = tableNode.table.body[o][r]._inlines.map((sl) => (Object.assign({}, sl)));
+				var line = this.buildNextLine(nodeCopy);
+				footerHeight += line.getHeight();
+			}
+		}
+
+		var availableHeight = this.writer.context().availableHeight + this.pageMargins.top;
+		if (availableHeight < footerHeight) {
+			this.writer.moveToNextPage();
+			availableHeight = this.writer.context().availableHeight + this.pageMargins.top;
+		}
+		this.writer.context().moveDown(availableHeight - footerHeight);
+	}
+
 	processor.beginTable(this.writer);
 
 	var rowHeights = tableNode.table.heights;
@@ -715,7 +735,6 @@ LayoutBuilder.prototype.processToc = function (node) {
 };
 
 LayoutBuilder.prototype.buildNextLine = function (textNode) {
-
 	function cloneInline(inline) {
 		var newInline = inline.constructor();
 		for (var key in inline) {
