@@ -637,9 +637,9 @@ LayoutBuilder.prototype.processTable = function (tableNode) {
 		for (var o = 0, m = tableNode.table.body.length; o < m; o++) {
 			for (var r = 0, t = tableNode.table.body[o].length; r < t; r++) {
 				var nodeCopy = Object.assign({}, tableNode.table.body[o][r]);
-				nodeCopy._inlines = tableNode.table.body[o][r]._inlines.map((sl) => (Object.assign({}, sl)));
+				if (tableNode.table.body[o][r]._inlines) nodeCopy._inlines = tableNode.table.body[o][r]._inlines.map((sl) => (Object.assign({}, sl)));
 				var line = this.buildNextLine(nodeCopy);
-				footerHeight += line.getHeight();
+				if (line) footerHeight += line.getHeight();
 			}
 		}
 

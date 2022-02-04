@@ -9431,7 +9431,7 @@ __webpack_require__(2222);
 (function (root, factory, undef) {
   if (true) {
     // CommonJS
-    module.exports = exports = factory(__webpack_require__(757), __webpack_require__(2601), __webpack_require__(1947), __webpack_require__(4978), __webpack_require__(7508), __webpack_require__(7590), __webpack_require__(3440), __webpack_require__(9865), __webpack_require__(8921), __webpack_require__(6876), __webpack_require__(7991), __webpack_require__(8122), __webpack_require__(8342), __webpack_require__(8714), __webpack_require__(6727), __webpack_require__(3486), __webpack_require__(3839), __webpack_require__(1582), __webpack_require__(8712), __webpack_require__(2362), __webpack_require__(4412), __webpack_require__(5720), __webpack_require__(3518), __webpack_require__(6362), __webpack_require__(4431), __webpack_require__(8800), __webpack_require__(3992), __webpack_require__(649), __webpack_require__(8942), __webpack_require__(194), __webpack_require__(8437), __webpack_require__(4640), __webpack_require__(5323), __webpack_require__(4363));
+    module.exports = exports = factory(__webpack_require__(757), __webpack_require__(2601), __webpack_require__(1947), __webpack_require__(4978), __webpack_require__(7508), __webpack_require__(7590), __webpack_require__(3440), __webpack_require__(9865), __webpack_require__(8921), __webpack_require__(6876), __webpack_require__(7991), __webpack_require__(8122), __webpack_require__(8342), __webpack_require__(8714), __webpack_require__(6727), __webpack_require__(3486), __webpack_require__(3839), __webpack_require__(1582), __webpack_require__(702), __webpack_require__(2362), __webpack_require__(4412), __webpack_require__(5720), __webpack_require__(3518), __webpack_require__(6362), __webpack_require__(4431), __webpack_require__(8800), __webpack_require__(3992), __webpack_require__(649), __webpack_require__(8942), __webpack_require__(194), __webpack_require__(8437), __webpack_require__(4640), __webpack_require__(5323), __webpack_require__(4363));
   } else {}
 })(void 0, function (CryptoJS) {
   return CryptoJS;
@@ -9810,7 +9810,7 @@ __webpack_require__(6495);
 
 /***/ }),
 
-/***/ 8712:
+/***/ 702:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14350,7 +14350,7 @@ module.exports = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ 3787:
+/***/ 5332:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -55499,7 +55499,7 @@ module.exports = __webpack_require__(7187).EventEmitter;
 
 /***/ }),
 
-/***/ 702:
+/***/ 2513:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(a,b){if(true)!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (b),
@@ -72644,7 +72644,7 @@ module.exports = URLBrowserResolver;
 var isFunction = (__webpack_require__(6225).isFunction);
 var isUndefined = (__webpack_require__(6225).isUndefined);
 var isNull = (__webpack_require__(6225).isNull);
-var FileSaver = __webpack_require__(702);
+var FileSaver = __webpack_require__(2513);
 var saveAs = FileSaver.saveAs;
 
 var defaultClientFonts = {
@@ -75783,9 +75783,9 @@ LayoutBuilder.prototype.processTable = function (tableNode) {
 		for (var o = 0, m = tableNode.table.body.length; o < m; o++) {
 			for (var r = 0, t = tableNode.table.body[o].length; r < t; r++) {
 				var nodeCopy = Object.assign({}, tableNode.table.body[o][r]);
-				nodeCopy._inlines = tableNode.table.body[o][r]._inlines.map((sl) => (Object.assign({}, sl)));
+				if (tableNode.table.body[o][r]._inlines) nodeCopy._inlines = tableNode.table.body[o][r]._inlines.map((sl) => (Object.assign({}, sl)));
 				var line = this.buildNextLine(nodeCopy);
-				footerHeight += line.getHeight();
+				if (line) footerHeight += line.getHeight();
 			}
 		}
 
@@ -76265,7 +76265,7 @@ function _interopDefault(ex) {
 	return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex;
 }
 
-var PdfKit = _interopDefault(__webpack_require__(3787));
+var PdfKit = _interopDefault(__webpack_require__(5332));
 
 function getEngineInstance() {
 	return PdfKit;
