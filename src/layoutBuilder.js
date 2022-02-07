@@ -1,5 +1,6 @@
 'use strict';
 
+var clone = require('clone-deep');
 var TraversalTracker = require('./traversalTracker');
 var DocPreprocessor = require('./docPreprocessor');
 var DocMeasure = require('./docMeasure');
@@ -389,6 +390,47 @@ LayoutBuilder.prototype.processNode = function (node) {
 			self.writer.context().moveToRelative(relPosition.x || 0, relPosition.y || 0);
 		}
 
+		if (node.isFooter) {
+			const nodeCopy = clone(node);
+			const originalX = self.writer.context().x;
+			const originalY = self.writer.context().y;
+			self.writer.context().moveTo(originalX, -800);
+			if (nodeCopy.stack) {
+				self.processVerticalContainer(nodeCopy);
+			} else if (nodeCopy.columns) {
+				self.processColumns(nodeCopy);
+			} else if (nodeCopy.ul) {
+				self.processList(false, nodeCopy);
+			} else if (nodeCopy.ol) {
+				self.processList(true, nodeCopy);
+			} else if (nodeCopy.table) {
+				self.processTable(nodeCopy);
+			} else if (nodeCopy.text !== undefined) {
+				self.processLeaf(nodeCopy);
+			} else if (nodeCopy.toc) {
+				self.processToc(nodeCopy);
+			} else if (nodeCopy.image) {
+				self.processImage(nodeCopy);
+			} else if (nodeCopy.svg) {
+				self.processSVG(nodeCopy);
+			} else if (nodeCopy.canvas) {
+				self.processCanvas(nodeCopy);
+			} else if (nodeCopy.qr) {
+				self.processQr(nodeCopy);
+			} else if (!nodeCopy._span) {
+				throw 'Unrecognized document structure: ' + JSON.stringify(nodeCopy, fontStringify);
+			}
+			var endAt = self.writer.context().y;
+			const blockHeight = (-800 - endAt) * -1;
+			self.writer.context().moveTo(originalX, originalY);
+			let availableHeight = self.writer.context().availableHeight;
+			if (availableHeight < blockHeight) {
+				self.writer.moveToNextPage();
+				availableHeight = self.writer.context().availableHeight;
+			}
+			self.writer.context().moveDown(availableHeight - blockHeight);
+		}
+
 		if (node.stack) {
 			self.processVerticalContainer(node);
 		} else if (node.columns) {
@@ -631,25 +673,27 @@ LayoutBuilder.prototype.processList = function (orderedList, node) {
 LayoutBuilder.prototype.processTable = function (tableNode) {
 	var processor = new TableProcessor(tableNode);
 
-	if (tableNode.table.isFooter) {
-		var footerHeight = 0;
+	// if (tableNode.table.isFooter) {
+	// 	var footerHeight = 0;
 
-		for (var o = 0, m = tableNode.table.body.length; o < m; o++) {
-			for (var r = 0, t = tableNode.table.body[o].length; r < t; r++) {
-				var nodeCopy = Object.assign({}, tableNode.table.body[o][r]);
-				if (tableNode.table.body[o][r]._inlines) nodeCopy._inlines = tableNode.table.body[o][r]._inlines.map((sl) => (Object.assign({}, sl)));
-				var line = this.buildNextLine(nodeCopy);
-				if (line) footerHeight += line.getHeight();
-			}
-		}
+	// 	for (var o = 0, m = tableNode.table.body.length; o < m; o++) {
+	// 		for (var r = 0, t = tableNode.table.body[o].length; r < t; r++) {
+	// 			var nodeCopy = Object.assign({}, tableNode.table.body[o][r]);
+	// 			if (tableNode.table.body[o][r]._inlines) nodeCopy._inlines = tableNode.table.body[o][r]._inlines.map((sl) => (Object.assign({}, sl)));
+	// 			var line = this.buildNextLine(nodeCopy);
+	// 			if (line) footerHeight += line.getHeight();
+	// 		}
+	// 	}
 
-		var availableHeight = this.writer.context().availableHeight + this.pageMargins.top;
-		if (availableHeight < footerHeight) {
-			this.writer.moveToNextPage();
-			availableHeight = this.writer.context().availableHeight + this.pageMargins.top;
-		}
-		this.writer.context().moveDown(availableHeight - footerHeight);
-	}
+	// 	var availableHeight = this.writer.context().availableHeight + this.pageMargins.top;
+	// 	console.log("availableHeight", availableHeight);
+	// 	console.log("footerHeight", footerHeight);
+	// 	if (availableHeight < footerHeight) {
+	// 		this.writer.moveToNextPage();
+	// 		availableHeight = this.writer.context().availableHeight + this.pageMargins.top;
+	// 	}
+	// 	this.writer.context().moveDown(availableHeight - footerHeight);
+	// }
 
 	processor.beginTable(this.writer);
 
